@@ -32,7 +32,7 @@ jobs:
 
       # Try to push a file to my own test-infra repo
       - name: Push file
-        uses: dmnemec/copy_file_to_another_repo_action@main
+        uses: dmnemec/copy_file_to_another_repo_action@5f40763ccee2954067adba7fb8326e4df33bcb92
         env:
           API_TOKEN_GITHUB: ${{ secrets.TEST_INFRA_PAT }}
         with:
