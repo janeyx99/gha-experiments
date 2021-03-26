@@ -28,7 +28,7 @@ jobs:
         
       - name: Create file
         run: |
-          echo "meow" > meow.txt
+          echo "meow!!" > meow.txt
 
       # Try to push a file to my own test-infra repo
       - name: Push file
