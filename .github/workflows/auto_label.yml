@@ -1,0 +1,14 @@
+name: Label PRs and Issues
+
+on:
+  schedule:
+    # every minute
+    - cron:  '*/1 * * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: srvaroa/labeler@master
+      env:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
