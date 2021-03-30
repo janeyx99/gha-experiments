@@ -17,7 +17,8 @@ jobs:
     steps:
       - name: Checkout PyTorch
         uses: actions/checkout@v2
-          - repository: pytorch/pytorch
+        with:
+          repository: pytorch/pytorch
 
       - name: Generate new slow test stats
         run: |
