@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  update-slow-list:
+  update-slow-tests:
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout PyTorch
@@ -22,7 +22,8 @@ jobs:
 
       - name: Generate new slow test stats
         run: |
-          pip install typing_extensions boto3
+          sudo apt-get install python3-dev python3-pip python3-venv python3-wheel -y
+          pip install wheel typing_extensions boto3
           python tools/export_slow_tests.py -f .pytorch-slow-tests
 
       - name: Push file to test-infra repository
