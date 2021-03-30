@@ -14,10 +14,10 @@ jobs:
       id: vars
       run: |
         set -eux
-        IS_PR=${{ github.event.issue.pull_request }}
+        IS_PR=${{ github.event.pull_request }}
         if [[ -n "${IS_PR}" ]]; then
-          TITLE="${{ github.event.issue.pull_request.title }}"
-          ISSUE_NUMBER=${{ github.event.issue.pull_request.number }}
+          TITLE="${{ github.event.pull_request.title }}"
+          ISSUE_NUMBER=${{ github.event.pull_request.number }}
         else
           TITLE="${{ github.event.issue.title }}"
           ISSUE_NUMBER=${{ github.event.issue.number }}
