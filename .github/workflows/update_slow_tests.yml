@@ -15,16 +15,27 @@ jobs:
   update-slow-tests:
     runs-on: ubuntu-18.04
     steps:
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+          architecture: x64
+
       - name: Checkout PyTorch
         uses: actions/checkout@v2
         with:
           repository: pytorch/pytorch
 
-      - name: Generate new slow test stats
+      - name: Install dependencies
+        # mypy and boto3 versions copied from
+        # .circleci/docker/common/install_conda.sh
         run: |
-          sudo apt-get install python3-dev python3-pip python3-venv python3-wheel -y
-          pip install wheel typing_extensions boto3
-          python3 tools/export_slow_tests.py -f .pytorch-slow-tests
+          set -eux
+          pip install -r requirements.txt
+          pip install boto3==1.16.34 mypy==0.770
+
+      - name: Generate new slow test stats
+        run: python3 tools/export_slow_tests.py -f .pytorch-slow-tests
 
       - name: Push file to test-infra repository
         uses: dmnemec/copy_file_to_another_repo_action@5f40763ccee2954067adba7fb8326e4df33bcb92
