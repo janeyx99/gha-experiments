@@ -12,10 +12,10 @@ jobs:
     - name: Auto-label ROCm
       run: |
         set -eux
-        TITLE=${{ github.event.issue.title }}
+        TITLE="${{ github.event.issue.title }}"
         ISSUE_NUMBER=${{ github.event.issue.number }}
-        OWNER=${{ github.repository_owner }}
-        REPO=${{ github.repository }}
+        OWNER="${{ github.repository_owner }}"
+        REPO="${{ github.repository }}"
         if [[ ${TITLE,,} =~ *rocm* ]]; then
           curl \
             -X POST \
