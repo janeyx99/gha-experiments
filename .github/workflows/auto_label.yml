@@ -1,16 +1,27 @@
-name: Label PRs and Issues
+name: Label PRs & Issues
 
 on:
-  schedule:
-    # every minute
-    - cron:  '*/1 * * * *'
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  issues:
+    types: [opened, edited]
+
 
 jobs:
-  build:
+  auto-label-issues:
     runs-on: ubuntu-18.04
     steps:
-    - uses: srvaroa/labeler@master
+    - name: Auto-label ROCm
+      run: |
+        set -eux
+        TITLE=${{ github.event.issue.title }}
+        ISSUE_NUMBER=${{ github.event.issue.number }}
+        OWNER=${{ github.repository_owner }}
+        REPO=${{ github.repository }}
+        if [[ ${TITLE,,} =~ *rocm* ]]; then
+          curl \
+            -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/$OWNER/$REPO/issues/$ISSUE_NUMBER/labels \
+            -d '{"labels":["ROCm"]}'
+        fi
       env:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
