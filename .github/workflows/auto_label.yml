@@ -15,7 +15,7 @@ jobs:
         TITLE="${{ github.event.issue.title }}"
         ISSUE_NUMBER=${{ github.event.issue.number }}
         OWNER="${{ github.repository_owner }}"
-        REPO="${{ github.repository }}"
+        REPO="${{ github.event.repository.name }}"
         if [[ ${TITLE,,} == *rocm* ]]; then
           curl \
             -X POST \
