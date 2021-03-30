@@ -28,4 +28,6 @@ jobs:
           pip install -r requirements.txt
           pip install boto3==1.16.34 mypy==0.770
       - name: Run tests
-        run: python -m unittest discover -vs tools/test -p 'test_*.py'
+        run: |
+          printf "import os\ntry:\n\tuser_paths = os.environ['PYTHONPATH'].split(os.pathsep)\nexcept KeyError:\n\tuser_paths = []\nprint(user_paths)" | python
+          python -m unittest discover -vs tools/test -p 'test_*.py'
