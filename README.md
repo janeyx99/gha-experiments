@@ -1,2 +1,3 @@
 # gha-experiments
-To experiment with GHA workflows
+
+To experiment with GHA workflows.
