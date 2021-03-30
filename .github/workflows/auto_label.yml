@@ -3,7 +3,8 @@ name: Label PRs & Issues
 on:
   issues:
     types: [opened, edited]
-
+  pull_request_target:
+    types: [edited, opened, synchronize, reopened]
 
 jobs:
   auto-label-issues:
