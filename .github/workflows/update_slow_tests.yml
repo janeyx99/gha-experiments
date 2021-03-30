@@ -35,8 +35,8 @@ jobs:
       - name: Generate new slow test stats
         run: |
           printf "import os\ntry:\n\tuser_paths = os.environ['PYTHONPATH'].split(os.pathsep)\nexcept KeyError:\n\tuser_paths = []\nprint(user_paths)" | python
-          ls tools
-          tools/export_slow_tests.py -f .pytorch-slow-tests
+          export PYTHONPATH=$PWD
+          python tools/export_slow_tests.py -f .pytorch-slow-tests
 
       - name: Push file to test-infra repository
         uses: dmnemec/copy_file_to_another_repo_action@5f40763ccee2954067adba7fb8326e4df33bcb92
