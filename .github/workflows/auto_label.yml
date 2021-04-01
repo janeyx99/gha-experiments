@@ -24,11 +24,11 @@ jobs:
         echo ::set-output name=TITLE::"${TITLE}"
         echo ::set-output name=ISSUE_NUMBER::"${ISSUE_NUMBER}"
       env:
-        IS_PR: ${{ github.event.pull_request }}
-        PR_TITLE: ${{ github.event.pull_request.title }}
-        PR_NUMBER: ${{ github.event.pull_request.number }}
-        ISSUE_TITLE: ${{ github.event.issue.title }}
-        ISSUE_NUMBER: ${{ github.event.issue.number }}
+        IS_PR: "${{ github.event.pull_request }}"
+        PR_TITLE: "${{ github.event.pull_request.title }}"
+        PR_NUMBER: "${{ github.event.pull_request.number }}"
+        ISSUE_TITLE: "${{ github.event.issue.title }}"
+        ISSUE_NUMBER: "${{ github.event.issue.number }}"
     - name: Auto-label ROCm
       run: |
         set -eux
