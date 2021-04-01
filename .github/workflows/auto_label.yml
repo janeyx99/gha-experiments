@@ -14,31 +14,34 @@ jobs:
       id: vars
       run: |
         set -eux
-        IS_PR=${{ github.event.pull_request }}
         if [[ -n "${IS_PR}" ]]; then
-          TITLE="${{ github.event.pull_request.title }}"
-          ISSUE_NUMBER=${{ github.event.pull_request.number }}
+          TITLE="${PR_TITLE}"
+          ISSUE_NUMBER="${PR_NUMBER}"
         else
-          TITLE="${{ github.event.issue.title }}"
-          ISSUE_NUMBER=${{ github.event.issue.number }}
+          TITLE="${ISSUE_TITLE}"
+          ISSUE_NUMBER="${ISSUE_NUMBER}"
         fi
-        echo ::set-output name=TITLE::${TITLE}
-        echo ::set-output name=ISSUE_NUMBER::${ISSUE_NUMBER}
-        echo ::set-output name=OWNER::"${{ github.repository_owner }}"
-        echo ::set-output name=REPO::"${{ github.event.repository.name }}"
+        echo ::set-output name=TITLE::"${TITLE}"
+        echo ::set-output name=ISSUE_NUMBER::"${ISSUE_NUMBER}"
+      env:
+        IS_PR: ${{ github.event.pull_request }}
+        PR_TITLE: ${{ github.event.pull_request.title }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        ISSUE_TITLE: ${{ github.event.issue.title }}
+        ISSUE_NUMBER: ${{ github.event.issue.number }}
     - name: Auto-label ROCm
       run: |
         set -eux
-        if [[ ${TITLE,,} == *rocm* ]]; then
+        if [[ "${TITLE,,}" == *rocm* ]]; then
           curl \
             -X POST \
             -H "Authorization: token ${GITHUB_TOKEN}" \
-            https://api.github.com/repos/${OWNER}/${REPO}/issues/${ISSUE_NUMBER}/labels \
+            "https://api.github.com/repos/${OWNER}/${REPO}/issues/${ISSUE_NUMBER}/labels" \
             -d '{"labels":["ROCm"]}'
         fi
       env:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-        TITLE: ${{ steps.vars.outputs.TITLE }}
-        ISSUE_NUMBER: ${{ steps.vars.outputs.ISSUE_NUMBER }}
-        OWNER: ${{ steps.vars.outputs.OWNER }}
-        REPO: ${{ steps.vars.outputs.REPO }}
+        TITLE: "${{ steps.vars.outputs.TITLE }}"
+        ISSUE_NUMBER: "${{ steps.vars.outputs.ISSUE_NUMBER }}"
+        OWNER: "${{ github.repository_owner }}"
+        REPO: "${{ github.event.repository.name }}"
