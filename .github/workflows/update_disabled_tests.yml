@@ -10,8 +10,6 @@ jobs:
   update-disabled-tests:
     runs-on: ubuntu-18.04
     steps:
-      - name: Checkout PyTorch
-        uses: actions/checkout@v2
       - name: Generate new disabled test list
         run: |
           curl 'https://api.github.com/search/issues?q=is%3Aissue+is%3Aopen+label%3A%22module%3A+flaky-tests%22+repo:pytorch/pytorch+in%3Atitle+DISABLED' \
@@ -19,7 +17,7 @@ jobs:
       - name: Push file to test-infra repository
         uses: dmnemec/copy_file_to_another_repo_action@5f40763ccee2954067adba7fb8326e4df33bcb92
         env:
-           API_TOKEN_GITHUB: ${{ secrets.DISABLED_TESTS_TOKEN }}
+           API_TOKEN_GITHUB: ${{ secrets.TEST_INFRA_TOKEN }}
         with:
           source_file: '.pytorch-disabled-tests'
           destination_repo: 'janeyx99/test-infra'
