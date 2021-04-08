@@ -32,16 +32,17 @@ jobs:
         run: |
           export PYTHONPATH=$PWD
           printf "import os\ntry:\n\tuser_paths = os.environ['PYTHONPATH'].split(os.pathsep)\nexcept KeyError:\n\tuser_paths = []\nprint(user_paths)" | python
-          python tools/export_slow_tests.py -f .pytorch-slow-tests
+          python tools/export_slow_tests.py -f slow-tests.json
 
       - name: Push file to test-infra repository
         uses: dmnemec/copy_file_to_another_repo_action@5f40763ccee2954067adba7fb8326e4df33bcb92
         env:
            API_TOKEN_GITHUB: ${{ secrets.TEST_INFRA_PAT }}
         with:
-          source_file: '.pytorch-slow-tests'
-          destination_repo: 'janeyx99/test-infra'
+          source_file: 'slow-tests.json'
+          destination_repo: 'pytorch/test-infra'
           destination_folder: 'stats'
-          user_email: 'janeyx@fb.com'
-          user_name: 'pytorchbot'
+          destination_branch: master
+          user_email: 'test-infra@pytorch.org'
+          user_name: 'PyTorch Test Infra'
           commit_message: 'Updating slow tests stats'
